@@ -70,6 +70,9 @@ body{
     background: #000;
 }
 
+
+
+
 #app{
     display: flex;
 }
@@ -78,14 +81,35 @@ body{
     background: #fff;
     min-width: 200px;
     height: 100vh;
+	display: flex;
+	justify-content: center;
+	padding-top: 30px;
+
+	.logo{
+		height: 25px;
+	}
+
+	nav{
+		margin-top: 100px;
+	}
+
+	&__inner{
+		width: 80%;
+	}
 
     &__link{
         display: block;
         text-decoration: none;
         color: initial;
+		margin-top: 10px;
+		transition: $transition1;
+
+		&:hover{
+			color: $color-main;
+		}
 
         &--active{
-            color: pink;
+            color: $color-main;
         }
     }
 }

@@ -1,10 +1,13 @@
 <template>
   <div id="app">
       <aside class="main-nav">
-          <nav>
-              <a class="main-nav__link main-nav__link--active" href="#">Overview</a>
-              <a class="main-nav__link" href="#">User</a>
-          </nav>
+          <div class="main-nav__inner">
+              <img class="logo" src="./assets/media/vector/logo.svg" alt="">
+              <nav>
+                  <a class="main-nav__link main-nav__link--active" href="#">Overview</a>
+                  <a class="main-nav__link" href="#">User</a>
+              </nav>
+          </div>
       </aside>
       <router-view/>
   </div>
