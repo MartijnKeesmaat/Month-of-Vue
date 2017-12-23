@@ -1,7 +1,12 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+      <aside class="main-nav">
+          <nav>
+              <a class="main-nav__link main-nav__link--active" href="#">Overview</a>
+              <a class="main-nav__link" href="#">User</a>
+          </nav>
+      </aside>
+      <router-view/>
   </div>
 </template>
 
@@ -11,13 +16,10 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+    .main-nav{
+        background: #fff;
+    }
 </style>
+
+<style src="./assets/styles/base.scss" lang="scss"></style>
