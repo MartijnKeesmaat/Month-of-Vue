@@ -1,28 +1,21 @@
 <template>
-  <div id="app">
-      <aside class="main-nav">
-          <div class="main-nav__inner">
-              <img class="logo" src="./assets/media/vector/logo.svg" alt="">
-              <nav>
-                  <a class="main-nav__link main-nav__link--active" href="#">Overview</a>
-                  <a class="main-nav__link" href="#">User</a>
-              </nav>
-          </div>
-      </aside>
-      <router-view/>
-  </div>
+    <div id="app">
+        <mv-sidebar></mv-sidebar>
+        <router-view/>
+    </div>
 </template>
 
 <script>
+import mvSidebar from './components/Sidebar/Sidebar.vue'
+
 export default {
-  name: 'app'
+    name: 'app',
+    components: {
+        mvSidebar
+    }
 }
 </script>
 
 <style lang="scss">
-    .main-nav{
-        background: #fff;
-    }
+    @import 'styles/2.settings/index-sett.scss';
 </style>
-
-<style src="./assets/styles/base.scss" lang="scss"></style>
