@@ -3,14 +3,32 @@
         <div class="main-nav__inner">
             <img class="logo" src="../../assets/media/vector/logo.svg" alt="">
             <nav>
-                <a class="main-nav__link main-nav__link--active" href="#">Overview</a>
-                <a class="main-nav__link" href="#">User</a>
+                <router-link
+                    v-for="link in menuItems"
+                    class="main-nav__link"
+                    router
+                    :to="link.link">
+                    {{ link.title }}
+                </router-link>
             </nav>
         </div>
     </aside>
 </template>
 
-<style lang="scss">
+<script>
+    export default {
+        data () {
+            return {
+                menuItems: [
+                    { title: 'Overview', link: '/'},
+                    { title: 'Sign in', link: '/signin'}
+                ]
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
     @import '../../styles/2.settings/index-sett.scss';
 
     .main-nav{

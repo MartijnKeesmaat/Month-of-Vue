@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Movues from '@/components/Movues'
+import Home from '@/components/Home'
+import SignIn from '@/components/User/SignIn'
 
 Vue.use(Router)
 
@@ -8,8 +9,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Movues',
-      component: Movues
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/signin',
+      name: 'SignIn',
+      component: SignIn
     }
-  ]
+  ],
+  mode: 'history'
 })
