@@ -132,7 +132,8 @@
   #DISABLED
 \*------------------------------------*/
 
-.btn--disabled{
+.btn--disabled,
+.btn[disabled]{
 	background: $nobel;
 	cursor: not-allowed;
 	box-shadow: none;

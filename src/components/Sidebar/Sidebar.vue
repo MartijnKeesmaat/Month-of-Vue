@@ -21,6 +21,7 @@
             return {
                 menuItems: [
                     { title: 'Overview', link: '/'},
+                    { title: 'Add movue', link: '/addMovue'},
                     { title: 'Sign in', link: '/signin'}
                 ]
             }
@@ -33,11 +34,12 @@
 
     .main-nav{
         background: #fff;
-        min-width: 150px;
+        min-width: 170px;
         height: 100vh;
         display: flex;
         justify-content: center;
         padding-top: 30px;
+        position: fixed;
 
         .logo{
             height: 25px;
@@ -48,7 +50,7 @@
         }
 
         &__inner{
-            width: 80px;
+            width: 100px;
         }
 
         &__link{

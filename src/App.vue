@@ -1,7 +1,9 @@
 <template>
     <div id="app">
         <mv-sidebar></mv-sidebar>
-        <router-view/>
+        <main>
+            <router-view/>
+        </main>
     </div>
 </template>
 
@@ -18,4 +20,9 @@ export default {
 
 <style lang="scss">
     @import 'styles/2.settings/index-sett.scss';
+
+    main{
+        margin-left: 150px;
+        padding: 40px;
+    }
 </style>
