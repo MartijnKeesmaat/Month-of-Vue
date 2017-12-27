@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import SignIn from '@/components/User/SignIn'
+import SignUp from '@/components/User/SignUp'
 import Movue from '@/components/Movue/Movue'
 import AddMovue from '@/components/Movue/addMovue'
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/signin',
       name: 'SignIn',
       component: SignIn
+    },
+    {
+      path: '/signup',
+      name: 'SignUp',
+      component: SignUp
     },
     {
       path: '/AddMovue',

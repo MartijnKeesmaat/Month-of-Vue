@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -12,11 +13,7 @@ export const store = new Vuex.Store({
         seasons: 2,
         posterImage: 'https://picsum.photos/200/300/?random',
         id: 'hgaq3g',
-        date: '2017-07-17',
-        user: {
-          id: '9h489h9ahgh',
-          registeredMovues: ['guh4p8']
-        }
+        date: '2017-07-17'
       },
       {
         title: 'Not American Horror Story',
@@ -24,13 +21,18 @@ export const store = new Vuex.Store({
         seasons: 2,
         posterImage: 'https://picsum.photos/200/300/?random',
         id: 'aw4eag4g',
-        date: '2017-07-14',
-        user: {
-          id: '3qhher',
-          registeredMovues: ['areh4qh']
-        }
+        date: '2017-07-14'
       }
-    ]
+    ],
+    user: null
+  },
+  mutations: {
+    createMovue (state, payload) {
+      state.loadedMovues.push(payload)
+    },
+    setUser (state, payload) {
+      state.user = payload
+    }
   },
   actions: {
     createMovue ({commit}, payload) {
@@ -45,11 +47,23 @@ export const store = new Vuex.Store({
       }
       // reach out to fb and store
       commit('createMovue', movue)
-    }
-  },
-  mutations: {
-    createMovue (state, payload) {
-      state.loadedMovues.push(payload)
+    },
+    signUserUp ({commit}, payload) {
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(
+          user => {
+            const newUser = {
+              id: user.uid,
+              registeredMovues: []
+            }
+            commit('setUser', newUser)
+          }
+        )
+        .catch(
+          error => {
+            console.log(error)
+          }
+        )
     }
   },
   getters: {
@@ -67,6 +81,9 @@ export const store = new Vuex.Store({
           return movue.id === movueId
         })
       }
+    },
+    user (state) {
+      return state.user
     }
   }
 })
