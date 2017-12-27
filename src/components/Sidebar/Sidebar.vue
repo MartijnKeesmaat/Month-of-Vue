@@ -28,7 +28,7 @@
           { title: 'Sign up', link: '/signup'}
         ]
         if (this.userIsAuthenticated) {
-          menuItems [
+          menuItems = [
             { title: 'Overview', link: '/'},
             { title: 'Add movue', link: '/addMovue'},
             { title: 'Sign in', link: '/signin'},

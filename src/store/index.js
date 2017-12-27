@@ -24,7 +24,9 @@ export const store = new Vuex.Store({
         date: '2017-07-14'
       }
     ],
-    user: null
+    user: null,
+    loading: false,
+    error: null
   },
   mutations: {
     createMovue (state, payload) {
@@ -32,6 +34,15 @@ export const store = new Vuex.Store({
     },
     setUser (state, payload) {
       state.user = payload
+    },
+    setLoading (state, payload) {
+      state.loading = payload
+    },
+    setError (state, payload) {
+      state.error = payload
+    },
+    clearError (state) {
+      state.error = null
     }
   },
   actions: {
@@ -49,14 +60,40 @@ export const store = new Vuex.Store({
       commit('createMovue', movue)
     },
     signUserUp ({commit}, payload) {
+      commit('setLoading', true)
+      commit('clearError', true)
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
+          commit('setLoading', false),
           user => {
             const newUser = {
               id: user.uid,
               registeredMovues: []
             }
             commit('setUser', newUser)
+          }
+        )
+        .catch(
+          error => {
+            commit('setLoading', false)
+            commit('setError', error)
+            console.log(error)
+          }
+        )
+    },
+    signUserIn ({commit}, payload) {
+      commit('setLoading', true)
+      commit('clearError', true)
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then(
+          commit('setLoading', false),
+          user => {
+            const newUser = {
+              id: user.uid,
+              registeredMovues: []
+            }
+            commit('setUser', newUser)
+            console.log(newUser)
           }
         )
         .catch(
