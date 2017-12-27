@@ -8,8 +8,8 @@ export const store = new Vuex.Store({
     loadedMovues: [
       {
         title: 'American Horror Story',
-        genre: 'Drama',
-        seasons: '2 seasons',
+        genres: 'Drama',
+        seasons: 2,
         posterImage: 'https://picsum.photos/200/300/?random',
         id: 'hgaq3g',
         date: '2017-07-17',
@@ -20,8 +20,8 @@ export const store = new Vuex.Store({
       },
       {
         title: 'Not American Horror Story',
-        genre: 'Drama',
-        seasons: '2 seasons',
+        genres: 'Drama',
+        seasons: 2,
         posterImage: 'https://picsum.photos/200/300/?random',
         id: 'aw4eag4g',
         date: '2017-07-14',
@@ -36,9 +36,11 @@ export const store = new Vuex.Store({
     createMovue ({commit}, payload) {
       const movue = {
         title: payload.title,
-        imageUrl: payload.imageUrl,
+        posterImage: payload.posterImage,
         description: payload.description,
         date: payload.date,
+        genres: payload.genres,
+        seasons: payload.seasons,
         id: 'owgjowiGE30'
       }
       // reach out to fb and store

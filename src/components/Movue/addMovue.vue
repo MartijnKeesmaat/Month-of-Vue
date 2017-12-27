@@ -5,10 +5,16 @@
       <label for="title">Title {{title}}</label>
       <input v-model="title" name="title" type="text" placeholder="Title">
 
-      <label for="image-url">Image url {{ imageUrl }}</label>
-      <input v-model="imageUrl" name="image-url" type="text" placeholder="Image url">
+      <label for="image-url">Image url {{ posterImage }}</label>
+      <input v-model="posterImage" name="image-url" type="text" placeholder="Image url">
 
-      <img class="previewImage" :src="imageUrl" alt="">
+      <img class="previewImage" :src="posterImage" alt="">
+
+      <label for="seaons">Seasons {{ seasons }}</label>
+      <input v-model="seasons" type="number" name="seasons" placeholder="0 season">
+
+      <label for="genre">Genre {{ genres }}</label>
+      <input v-model="genres" type="text" name="" value="" placeholder="genre">
 
       <label for="description">Description {{ description }}</label>
       <textarea v-model="description" name="description" type="text" placeholder="Description"></textarea>
@@ -23,26 +29,36 @@ export default {
   data () {
     return {
       title: '',
-      imageUrl: '',
-      description: ''
+      posterImage: '',
+      description: '',
+      genres: '',
+      seasons: ''
     }
   },
   computed: {
     formIsValid () {
       return this.title !== '' &&
-      this.imageUrl !== '' &&
+      this.posterImage !== '' &&
+      this.genres !== '' &&
+      this.seasons !== '' &&
       this.description !== ''
     }
   },
   methods: {
     onCreateMovue () {
+      if (!this.formIsValid) {
+        return
+      }
       const movueData = {
         title: this.title,
-        imageUrl: this.imageUrl,
+        posterImage: this.posterImage,
         description: this.description,
+        genres: this.genres,
+        seasons: this.seasons,
         date: new Date()
       }
       this.$store.dispatch('createMovue', movueData)
+      this.$router.push('/')
     }
   }
 }

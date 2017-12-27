@@ -12,9 +12,9 @@
 
                 <router-link :to="'/movues/' + movue.id" router>
                     <section class="movue__top">
-                       {{ movue.genre }}
+                       {{ movue.genres }}
                       <span class="movue__seperator"></span>
-                       {{ movue.seasons }}
+                       {{ movue.seasons }} seasons
                     </section>
 
                     <section class="movue__bottom">
