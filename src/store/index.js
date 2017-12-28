@@ -24,9 +24,9 @@ export const store = new Vuex.Store({
         date: '2017-07-14'
       }
     ],
-    user: null,
-    loading: false,
-    error: null
+    user: null
+    // loading: false,
+    // error: null
   },
   mutations: {
     createMovue (state, payload) {
@@ -34,16 +34,16 @@ export const store = new Vuex.Store({
     },
     setUser (state, payload) {
       state.user = payload
-    },
-    setLoading (state, payload) {
-      state.loading = payload
-    },
-    setError (state, payload) {
-      state.error = payload
-    },
-    clearError (state) {
-      state.error = null
     }
+    // setLoading (state, payload) {
+    //   state.loading = payload
+    // },
+    // setError (state, payload) {
+    //   state.error = payload
+    // },
+    // clearError (state) {
+    //   state.error = null
+    // }
   },
   actions: {
     createMovue ({commit}, payload) {
@@ -60,8 +60,8 @@ export const store = new Vuex.Store({
       commit('createMovue', movue)
     },
     signUserUp ({commit}, payload) {
-      commit('setLoading', true)
-      commit('clearError', true)
+      // commit('setLoading', true)
+      // commit('clearError', true)
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
           commit('setLoading', false),
@@ -74,19 +74,19 @@ export const store = new Vuex.Store({
           }
         )
         .catch(
-          error => {
-            commit('setLoading', false)
-            commit('setError', error)
-            console.log(error)
-          }
+          // error => {
+          //   commit('setLoading', false)
+          //   commit('setError', error)
+          //   console.log(error)
+          // }
         )
     },
     signUserIn ({commit}, payload) {
-      commit('setLoading', true)
-      commit('clearError', true)
+      // commit('setLoading', true)
+      // commit('clearError', true)
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(
-          commit('setLoading', false),
+          // commit('setLoading', false),
           user => {
             const newUser = {
               id: user.uid,
@@ -102,6 +102,9 @@ export const store = new Vuex.Store({
           }
         )
     }
+    // clearError ({commit}) {
+    //   commit('clearError')
+    // }
   },
   getters: {
     loadedMovues (state) {
@@ -122,5 +125,11 @@ export const store = new Vuex.Store({
     user (state) {
       return state.user
     }
+    // loading (state) {
+    //   return state.loading
+    // },
+    // error (state) {
+    //   return state.error
+    // }
   }
 })

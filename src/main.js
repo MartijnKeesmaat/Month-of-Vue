@@ -6,8 +6,11 @@ import * as firebase from 'firebase'
 import router from './router'
 import './styles/main.scss'
 import { store } from './store'
+import AlertCmp from './components/Shared/Alert.vue'
 
 Vue.config.productionTip = false
+
+Vue.component('mvAlert', AlertCmp)
 
 /* eslint-disable no-new */
 new Vue({
