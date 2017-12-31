@@ -9,9 +9,9 @@
 	box-shadow: $shadow-sm;
 	border: none;
 	white-space: normal;
-	padding: 0.55em 1.7em 0.5em;
+	padding: 0.55em 1.4em 0.5em;
 	display: inline-block;
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 	border-radius: 1px;
 	margin-right: 18px;
 	color: #fff;
@@ -36,17 +36,19 @@
 \*------------------------------------*/
 
 // color black
-.btn--black{
-	background: $oxford;
+.btn--secondary{
+	background: $color-secondary;
+	color: #000;
+	box-shadow: 2px 2px 11px 2px rgba($color-secondary, .5);
 
 	&:hover{
-		background: lighten($oxford, 10%);
+		background: lighten($color-secondary, 10%);
 	}
 }
 
-.btn--black.btn--ghost{
-	color: $oxford;
-	box-shadow: inset 0px 0px 0px .15em $oxford;
+.btn--secondary.btn--ghost{
+	color: $color-secondary;
+	box-shadow: inset 0px 0px 0px .15em $color-secondary;
 
 	&:hover{
 		background: $color-black--alt;
@@ -176,5 +178,17 @@
 	&:hover{
 		color: $color-main--dark;
 		border-color: $color-main--dark;
+	}
+}
+
+
+
+
+.btn--icon{
+	display: flex;
+	align-items: center;
+
+	img{
+		margin-right: 10px;
 	}
 }

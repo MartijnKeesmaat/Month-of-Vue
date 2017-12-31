@@ -25,8 +25,8 @@ html{
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-	background: $color-white--alt;
+  width: 3px;
+	background: #000;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -66,13 +66,10 @@ figure{
 
 
 body{
-    margin: 0;
-    background: #000;
+  margin: 0;
+  background: #000;
 }
 
-
-
-
 #app{
-    display: flex;
+  display: flex;
 }

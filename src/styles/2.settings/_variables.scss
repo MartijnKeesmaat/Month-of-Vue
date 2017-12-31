@@ -9,6 +9,7 @@ $charade                     : #282C37;
 $bayoux                      : #38415F;
 $nobel                       : #B6B6B6;
 $ebb                         : #EEE8E8;
+$yellow                      : #FAB437; 
 $athens-gray                 : #f6f6f6;
 $color-overlay               : #1c1e32;
 
@@ -17,6 +18,10 @@ $color-overlay               : #1c1e32;
 $color-main                  : $valencia;
 $color-main--light		     : lighten($color-main, 10%);
 $color-main--dark	         : darken($color-main, 10%);
+
+$color-secondary                  : $yellow;
+$color-secondary--light		     : lighten($color-secondary, 10%);
+$color-secondary--dark	         : darken($color-secondary, 10%);
 
 $color-white                 : #fff;
 $color-white--alt            : $athens-gray;

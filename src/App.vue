@@ -11,18 +11,20 @@
 import mvSidebar from './components/Sidebar/Sidebar.vue'
 
 export default {
-    name: 'app',
-    components: {
-        mvSidebar
-    }
+  name: 'app',
+  components: {
+    mvSidebar
+  }
 }
 </script>
 
 <style lang="scss">
-    @import 'styles/2.settings/index-sett.scss';
+  @import 'styles/2.settings/index-sett.scss';
 
-    main{
-        margin-left: 150px;
-        padding: 40px;
-    }
+  main{
+    $sidebar-width: 170px;
+
+    margin-left: $sidebar-width;
+    width: calc(100% - #{$sidebar-width});
+  }
 </style>

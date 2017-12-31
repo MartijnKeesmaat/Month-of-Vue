@@ -6,11 +6,12 @@ import * as firebase from 'firebase'
 import router from './router'
 import './styles/main.scss'
 import { store } from './store'
-import AlertCmp from './components/Shared/Alert.vue'
+
+// import AlertCmp from './components/Shared/Alert.vue'
 
 Vue.config.productionTip = false
 
-Vue.component('mvAlert', AlertCmp)
+// Vue.component('mvAlert', AlertCmp)
 
 /* eslint-disable no-new */
 new Vue({
@@ -27,5 +28,6 @@ new Vue({
       projectId: 'movue-d0306',
       storageBucket: 'movue-d0306.appspot.com'
     })
+    this.$store.dispatch('loadMovues')
   }
 })
