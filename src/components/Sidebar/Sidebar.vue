@@ -8,6 +8,7 @@
       <router-link v-for="link in menuItems" class="main-nav__link" router :to="link.link">
         {{ link.title }}
       </router-link>
+      <a @click="onLogout" v-if="userIsAuthenticated" class="main-nav__link">Logout</a>
     </nav>
   </div>
 </aside>
@@ -15,6 +16,11 @@
 
 <script>
   export default {
+    methods: {
+      onLogout () {
+        this.$store.dispatch('logout')
+      }
+    },
     computed: {
       menuItems() {
         let menuItems = [{
@@ -34,14 +40,6 @@
             {
               title: 'Add movue',
               link: '/addMovue'
-            },
-            {
-              title: 'Sign in',
-              link: '/signin'
-            },
-            {
-              title: 'Sign up',
-              link: '/signup'
             }
           ]
         }

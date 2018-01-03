@@ -28,6 +28,11 @@ new Vue({
       projectId: 'movue-d0306',
       storageBucket: 'movue-d0306.appspot.com'
     })
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user)
+      }
+    })
     this.$store.dispatch('loadMovues')
   }
 })

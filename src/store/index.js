@@ -72,7 +72,8 @@ export const store = new Vuex.Store({
               description: obj[key].description,
               posterImage: obj[key].posterImage,
               genres: obj[key].genres,
-              seasons: obj[key].seasons
+              seasons: obj[key].seasons,
+              creatorId: obj[key].creatorId
             })
           }
           commit('setLoadedMovues', movues)
@@ -83,7 +84,7 @@ export const store = new Vuex.Store({
           // commit('setLoading', true)
         })
     },
-    createMovue ({commit}, payload) {
+    createMovue ({commit, getters}, payload) {
       const movue = {
         title: payload.title,
         posterImage: payload.posterImage,
@@ -91,7 +92,7 @@ export const store = new Vuex.Store({
         date: payload.date,
         genres: payload.genres,
         seasons: payload.seasons,
-        id: 'owgjowiGE30'
+        creatorId: getters.user.id
       }
       firebase.database().ref('movues').push(movue)
         .then((data) => {
@@ -147,6 +148,13 @@ export const store = new Vuex.Store({
             console.log(error)
           }
         )
+    },
+    autoSignIn ({commit}, payload) {
+      commit('setUser', {id: payload.uid, registeredMovues: []})
+    },
+    logout ({commit}) {
+      firebase.auth().signOut()
+      commit('setUser', null)
     }
     // clearError ({commit}) {
     //   commit('clearError')
