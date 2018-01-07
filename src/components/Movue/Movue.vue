@@ -39,18 +39,9 @@
 
       <div
         @click="onLike"
-        v-if="!likedMovue"
         class="mv-highlight__fav">
         <img src="../../assets/media/vector/icons/heart.svg" alt="">
-        <p>Voeg toe aan favorieten</p>
-      </div>
-
-      <div
-        @click="onLike"
-        v-else
-        class="mv-highlight__fav">
-        <img src="../../assets/media/vector/icons/heart.svg" alt="">
-        <p>Verwijder van favorieten</p>
+        <p>{{ userIsRegistered ? 'Verwijder van favorieten' : 'Voeg toe aan favorieten'}}</p>
       </div>
 
       <!-- <template v-if="userIsCreator">
@@ -282,18 +273,18 @@ export default {
       }
       return this.$store.getters.user.id === this.movue.creatorId
     },
-    likedMovue () {
-      return this.$store.getters.user.registeredMovues.findIndex(movueId => {
-        return movueId === this.movueId
-      }) >= 0
-    }
+    userIsRegistered () {
+        return this.$store.getters.user.registeredMovues.findIndex(movueId => {
+          return movueId === this.movue.id
+        }) >= 0
+      }
   },
   methods: {
     onLike () {
-      if (this.likedMovue) {
-        this.$store.dispatch('unlikeMovue', this.movueId)
+      if (this.userIsRegistered) {
+        this.$store.dispatch('unregisterUserFromMovue', this.movue.id)
       } else {
-        this.$store.dispatch('likeMovue', this.movueId)
+        this.$store.dispatch('registerUserForMovue', this.movue.id)
       }
     }
   }

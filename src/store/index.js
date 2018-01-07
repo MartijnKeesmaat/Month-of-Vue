@@ -11,15 +11,15 @@ export const store = new Vuex.Store({
     user: null
   },
   mutations: {
-    likeMovue (state, payload) {
-      const id = payload.idea
+    registerUserForMovue (state, payload) {
+      const id = payload.id
       if (state.user.registeredMovues.findIndex(movue => movue.id === id) >= 0) {
         return
       }
       state.user.registeredMovues.push(id)
       state.user.fbKeys[id] = payload.fbKey
     },
-    unlikeMovue (state, payload) {
+    unregisterUserFromMovue (state, payload) {
       const registeredMovues = state.user.registeredMovues
       registeredMovues.splice(registeredMovues.findIndex(movue => movue.id === payload), 1)
       Reflect.deleteProperty(state.user.fbKeys, payload)
@@ -35,27 +35,27 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    likeMovue ({commit, getters}, payload) {
+    registerUserForMovue ({commit, getters}, payload) {
       const user = getters.user
-      firebase.database().ref('/users/' + user.id).child('/likedMovues')
+      firebase.database().ref('/users/' + user.id).child('/registrations/')
         .push(payload)
         .then(data => {
-          commit('likeMovue', { id: payload, fbKey: data.key })
+          commit('registerUserForMovue', {id: payload, fbKey: data.key})
         })
         .catch(error => {
           console.log(error)
         })
     },
-    unlikeMovue ({commit, getters}, payload) {
+    unregisterUserFromMovue ({commit, getters}, payload) {
       const user = getters.user
       if (!user.fbKeys) {
         return
       }
       const fbKey = user.fbKeys[payload]
-      firebase.database().ref('/users/' + user.id + '/likedMovues/').child(fbKey)
+      firebase.database().ref('/users/' + user.id + '/registrations/').child(fbKey)
         .remove()
         .then(() => {
-          commit('unlikeMovue', payload)
+          commit('unregisterUserFromMovue', payload)
         })
         .catch(error => {
           console.log(error)
