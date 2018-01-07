@@ -7,38 +7,23 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     loadedMovues: [
-      // {
-      //   title: 'American Horror Story',
-      //   genres: 'Action',
-      //   seasons: 2,
-      //   posterImage: 'https://picsum.photos/400/300?image=338',
-      //   highlightImage: 'https://picsum.photos/1600/900?image=338',
-      //   highlighted: true
-      // },
-      // {
-      //   title: 'Not American Horror Story',
-      //   genres: 'Action',
-      //   seasons: 2,
-      //   posterImage: 'https://picsum.photos/400/300?image=335',
-      //   highlightImage: 'https://picsum.photos/1600/900?image=335',
-      //   date: '2017-07-14',
-      //   highlighted: false
-      // },
-      // {
-      //   title: 'Yet American Horror Story',
-      //   genres: 'Drama',
-      //   seasons: 2,
-      //   posterImage: 'https://picsum.photos/400/300?image=335',
-      //   highlightImage: 'https://picsum.photos/1600/900?image=335',
-      //   date: '2017-07-14',
-      //   highlighted: false
-      // }
     ],
-    user: null,
-    loading: false
-    // error: null
+    user: null
   },
   mutations: {
+    likeMovue (state, payload) {
+      const id = payload.idea
+      if (state.user.registeredMovues.findIndex(movue => movue.id === id) >= 0) {
+        return
+      }
+      state.user.registeredMovues.push(id)
+      state.user.fbKeys[id] = payload.fbKey
+    },
+    unlikeMovue (state, payload) {
+      const registeredMovues = state.user.registeredMovues
+      registeredMovues.splice(registeredMovues.findIndex(movue => movue.id === payload), 1)
+      Reflect.deleteProperty(state.user.fbKeys, payload)
+    },
     setLoadedMovues (state, payload) {
       state.loadedMovues = payload
     },
@@ -48,19 +33,35 @@ export const store = new Vuex.Store({
     setUser (state, payload) {
       state.user = payload
     }
-    // setLoading (state, payload) {
-    //   state.loading = payload
-    // }
-    // setError (state, payload) {
-    //   state.error = payload
-    // },
-    // clearError (state) {
-    //   state.error = null
-    // }
   },
   actions: {
+    likeMovue ({commit, getters}, payload) {
+      const user = getters.user
+      firebase.database().ref('/users/' + user.id).child('/likedMovues')
+        .push(payload)
+        .then(data => {
+          commit('likeMovue', { id: payload, fbKey: data.key })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    unlikeMovue ({commit, getters}, payload) {
+      const user = getters.user
+      if (!user.fbKeys) {
+        return
+      }
+      const fbKey = user.fbKeys[payload]
+      firebase.database().ref('/users/' + user.id + '/likedMovues/').child(fbKey)
+        .remove()
+        .then(() => {
+          commit('unlikeMovue', payload)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     loadMovues ({commit}) {
-      // commit('setLoading', true)
       firebase.database().ref('movues').once('value')
         .then((data) => {
           const movues = []
@@ -77,28 +78,40 @@ export const store = new Vuex.Store({
             })
           }
           commit('setLoadedMovues', movues)
-          // commit('setLoading', false)
         })
         .catch((error) => {
           console.log(error)
-          // commit('setLoading', true)
         })
     },
     createMovue ({commit, getters}, payload) {
       const movue = {
         title: payload.title,
-        posterImage: payload.posterImage,
         description: payload.description,
         date: payload.date,
         genres: payload.genres,
         seasons: payload.seasons,
         creatorId: getters.user.id
       }
+      let posterImage
+      let key
       firebase.database().ref('movues').push(movue)
         .then((data) => {
-          const key = data.key
+          key = data.key
+          return key
+        })
+        .then(key => {
+          const filename = payload.image.name
+          const ext = filename.slice(filename.lastIndexOf('.'))
+          return firebase.storage().ref('movues/' + key + '.' + ext).put(payload.image)
+        })
+        .then(fileData => {
+          posterImage = fileData.metadata.downloadURLs[0]
+          return firebase.database().ref('movues').child(key).update({posterImage: posterImage})
+        })
+        .then(() => {
           commit('createMovue', {
             ...movue,
+            posterImage: posterImage,
             id: key
           })
         })
@@ -107,37 +120,31 @@ export const store = new Vuex.Store({
         })
     },
     signUserUp ({commit}, payload) {
-      // commit('setLoading', true)
-      // commit('clearError', true)
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
-          // commit('setLoading', false),
           user => {
             const newUser = {
               id: user.uid,
-              registeredMovues: []
+              registeredMovues: [],
+              fbKeys: {}
             }
             commit('setUser', newUser)
           }
         )
         .catch(
           error => {
-            // commit('setLoading', false)
-          //   commit('setError', error)
             console.log(error)
           }
         )
     },
     signUserIn ({commit}, payload) {
-      // commit('setLoading', true)
-      // commit('clearError', true)
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(
-          // commit('setLoading', false),
           user => {
             const newUser = {
               id: user.uid,
-              registeredMovues: []
+              registeredMovues: [],
+              fbKeys: {}
             }
             commit('setUser', newUser)
             console.log(newUser)
@@ -150,15 +157,16 @@ export const store = new Vuex.Store({
         )
     },
     autoSignIn ({commit}, payload) {
-      commit('setUser', {id: payload.uid, registeredMovues: []})
+      commit('setUser', {
+        id: payload.uid,
+        registeredMovues: [],
+        fbKeys: {}
+      })
     },
     logout ({commit}) {
       firebase.auth().signOut()
       commit('setUser', null)
     }
-    // clearError ({commit}) {
-    //   commit('clearError')
-    // }
   },
   getters: {
     loadedMovues (state) {
@@ -179,11 +187,5 @@ export const store = new Vuex.Store({
     user (state) {
       return state.user
     }
-    // loading (state) {
-    //   return state.loading
-    // }
-    // error (state) {
-    //   return state.error
-    // }
   }
 })

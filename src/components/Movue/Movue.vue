@@ -37,10 +37,31 @@
 
       <h1> {{ movue.title }} </h1>
 
-      <div class="mv-highlight__fav">
+      <div
+        @click="onLike"
+        v-if="!likedMovue"
+        class="mv-highlight__fav">
         <img src="../../assets/media/vector/icons/heart.svg" alt="">
         <p>Voeg toe aan favorieten</p>
       </div>
+
+      <div
+        @click="onLike"
+        v-else
+        class="mv-highlight__fav">
+        <img src="../../assets/media/vector/icons/heart.svg" alt="">
+        <p>Verwijder van favorieten</p>
+      </div>
+
+      <!-- <template v-if="userIsCreator">
+        <app-edit-movue-dialog v-if="showEditModal" :movue="movue"></app-edit-movue-dialog>
+
+        <button @click="showEditModal = true" class="mv-highlight__edit">
+          <img src="../../assets/media/vector/icons/heart.svg" alt="">
+          <p>Edit movue</p>
+        </button>
+
+      </template> -->
 
     </div>
 
@@ -243,9 +264,37 @@
 <script>
 export default {
   props: ['id'],
+  data () {
+    return {
+      showEditModal: false
+    }
+  },
   computed: {
     movue () {
       return this.$store.getters.loadedMovue(this.id)
+    },
+    userIsAuthenticated () {
+      return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+    },
+    userIsCreator () {
+      if (!this.userIsAuthenticated) {
+        return false
+      }
+      return this.$store.getters.user.id === this.movue.creatorId
+    },
+    likedMovue () {
+      return this.$store.getters.user.registeredMovues.findIndex(movueId => {
+        return movueId === this.movueId
+      }) >= 0
+    }
+  },
+  methods: {
+    onLike () {
+      if (this.likedMovue) {
+        this.$store.dispatch('unlikeMovue', this.movueId)
+      } else {
+        this.$store.dispatch('likeMovue', this.movueId)
+      }
     }
   }
 }
@@ -384,6 +433,17 @@ $wrapper-size: 55px;
     img{
       margin-right: 8px;
       transform: scale(.9);
+    }
+  }
+
+  &__edit{
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+
+    img{
+      margin-right: 10px;
     }
   }
 
